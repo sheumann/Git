@@ -80,7 +80,7 @@ git_sint32 restoreFromFile (git_sint32 * base, git_sint32 id,
             for (i = 0 ; i < 128 ; ++i)
             {
                 glui32 c = glk_get_char_stream (file);
-                if (gInitMem [i] != c)
+                if (*(gInitMem + i) != c)
                     return 1;
             }
         }
@@ -125,7 +125,7 @@ git_sint32 restoreFromFile (git_sint32 * base, git_sint32 id,
                 
                 for (++mult ; mult > 0 ; --mult, ++i)
                     if (i >= protectEnd || i < protectPos)
-                        gMem [i] = gInitMem [i] ^ c;
+                        *(gMem + i) = *(gInitMem + i) ^ c;
             }
 
             while (i < gEndMem && bytesRead < chunkSize)
@@ -142,16 +142,16 @@ git_sint32 restoreFromFile (git_sint32 * base, git_sint32 id,
                 
                 for (++mult ; mult > 0 ; --mult, ++i)
                     if (i >= protectEnd || i < protectPos)
-                        gMem [i] = c;
+                        *(gMem + i) = c;
             }
 
             while (i < gExtStart)
                 if (i >= protectEnd || i < protectPos)
-                    gMem [i] = gInitMem [i], ++i;
+                    *(gMem + i) = *(gInitMem + i), ++i;
 
             while (i < gEndMem)
                 if (i >= protectEnd || i < protectPos)
-                    gMem [i] = 0, ++i;
+                    *(gMem + i) = 0, ++i;
 
             if (bytesRead != chunkSize)
                 return 1; // Too much data!
@@ -251,7 +251,7 @@ git_sint32 saveToFile (git_sint32 * base, git_sint32 * sp, git_sint32 id)
     glk_put_string ("Stks");
     writeWord ((sp - base) * 4);
     for (n = 0 ; n < (git_uint32) (sp - base) ; ++n)
-        writeWord (base [n]);
+        writeWord (*(base + n));
 
     // Heap chunk.
     if (heap != 0)
@@ -259,7 +259,7 @@ git_sint32 saveToFile (git_sint32 * base, git_sint32 * sp, git_sint32 id)
         glk_put_string ("MAll");
         writeWord (heapSize * 4);
         for (n = 0 ; n < heapSize ; ++n)
-            writeWord (heap [n]);
+            writeWord (*(heap + n));
         free(heap);
     }
 
@@ -271,8 +271,8 @@ git_sint32 saveToFile (git_sint32 * base, git_sint32 * sp, git_sint32 id)
     writeWord (gEndMem);
     for (zeroCount = 0, n = gRamStart ; n < gEndMem ; ++n)
     {
-        unsigned char romC = (n < gExtStart) ? gInitMem[n] : 0;
-        unsigned char c = ((git_uint32) romC) ^ ((git_uint32) gMem[n]);
+        unsigned char romC = (n < gExtStart) ? *(gInitMem + n) : 0;
+        unsigned char c = ((git_uint32) romC) ^ ((git_uint32) *(gMem + n));
         if (c == 0)
             ++zeroCount;
         else

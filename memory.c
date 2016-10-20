@@ -126,14 +126,14 @@ void resetMemory (git_uint32 protectPos, git_uint32 protectSize)
     for (i = gRamStart; i < gExtStart; ++i)
     {
         if (i >= protectEnd || i < protectPos)
-            gMem [i] = gInitMem [i];
+            *(gMem + i) = *(gInitMem + i);
     }
 
     // Zero out the extended RAM.
     for (i = gExtStart; i < gEndMem; ++i)
     {
         if (i >= protectEnd || i < protectPos)
-            gMem [i] = 0;
+            *(gMem + i) = 0;
     }
 }
 
