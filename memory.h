@@ -27,9 +27,9 @@
 // slow and tedious way.
 
 #define read32(ptr)    \
-  ( (git_uint32)(((git_uint8 *)(ptr))[0] << 24) \
-  | (git_uint32)(((git_uint8 *)(ptr))[1] << 16) \
-  | (git_uint32)(((git_uint8 *)(ptr))[2] << 8)  \
+  ( ((git_uint32)(((git_uint8 *)(ptr))[0]) << 24) \
+  | ((git_uint32)(((git_uint8 *)(ptr))[1]) << 16) \
+  | ((git_uint32)(((git_uint8 *)(ptr))[2]) << 8)  \
   | (git_uint32)(((git_uint8 *)(ptr))[3]))
 #define read16(ptr)    \
   ( (git_uint16)(((git_uint8 *)(ptr))[0] << 8)  \
