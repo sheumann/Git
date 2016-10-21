@@ -9,6 +9,52 @@
 #include <string.h>
 #include <time.h>
 
+#ifdef __ORCAC__
+#include <math.h>
+
+#define sinf(x) (float)sin(x)
+#define cosf(x) (float)cos(x)
+#define tanf(x) (float)tan(x)
+#define asinf(x) (float)asin(x)
+#define acosf(x) (float)acos(x)
+#define atanf(x) (float)atan(x)
+#define atan2f(x,y) (float)atan2((x),(y))
+#define fmodf(x,y) (float)fmod((x),(y))
+#define powf(x,y) (float)pow((x),(y))
+#define ceilf(x) (float)ceil(x)
+#define floorf(x) (float)floor(x)
+#define sqrtf(x) (float)sqrt(x)
+#define expf(x) (float)exp(x)
+#define logf(x) (float)log(x)
+
+static int signbit(float x)
+{
+    float n = x;
+    return (*(unsigned long *)&n & 0x80000000) != 0;
+}
+
+static float truncf(float x)
+{
+    return signbit(x) ? ceil(x) : floor(x);
+}
+
+static float roundf(float x)
+{
+    long double tr = truncf(x);
+
+    if (signbit(x) == 0) {
+        if (x - tr >= 0.5)
+            return ceil(x);
+    } else {
+        if (tr - x >= 0.5)
+            return floor(x);
+
+        }
+
+    return tr;
+}
+#endif
+
 // -------------------------------------------------------------
 // Global variables
 
