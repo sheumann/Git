@@ -10,6 +10,10 @@
 #include <time.h>
 
 #ifdef __ORCAC__
+segment "terp______";
+#endif
+
+#ifdef __ORCAC__
 #include <math.h>
 
 #define sinf(x) (float)sin(x)

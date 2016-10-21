@@ -44,6 +44,10 @@
      To work this code over for a new VM, just diddle the macros.
 */
 
+#ifdef __ORCAC__
+segment "glkop_____";
+#endif
+
 #define Stk1(sp)   \
   (*((unsigned char *)(sp)))
 #define Stk2(sp)   \

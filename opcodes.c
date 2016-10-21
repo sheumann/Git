@@ -3,6 +3,10 @@
 #include "git.h"
 #include "opcodes.h"
 
+#ifdef __ORCAC__
+segment "opcodes___";
+#endif
+
 static void parseModeNibbles (git_uint32* pc, int numModes, int * modeBuffer)
 {
     int * mode = modeBuffer;
